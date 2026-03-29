@@ -338,7 +338,6 @@ class Window(Adw.ApplicationWindow):
 
     def __on_deck_name_changed(self, entry):
         self.current_deck.name = entry.get_text()
-        self.current_deck.save()
         self.decks_model.emit('items-changed', 0, 0, 0)
 
 
@@ -393,7 +392,6 @@ class Window(Adw.ApplicationWindow):
 
     def __on_emoji_picked(self, emoji_chooser, emoji_text):
         self.current_deck.icon = emoji_text
-        self.current_deck.save()
         self.deck_view.deck_icon.set_label(self.current_deck.icon)
         self.decks_model.emit('items-changed', 0, 0, 0)
 
@@ -429,6 +427,8 @@ class Window(Adw.ApplicationWindow):
                 self.current_deck.icon == "" and
                 self.current_deck.cards_model.props.n_items < 1):
                 self.delete_deck(self.current_deck)
+            else:
+                self.current_deck.save()
         elif isinstance(view, CardView):
             self.card_view.hide_answer()
 
@@ -439,6 +439,8 @@ class Window(Adw.ApplicationWindow):
                 self.current_deck.icon == "" and
                 self.current_deck.cards_model.props.n_items < 1):
                 self.delete_deck(self.current_deck)
+            else:
+                self.current_deck.save()
 
 
     def __on_card_selection_mode_button_clicked(self, button):
